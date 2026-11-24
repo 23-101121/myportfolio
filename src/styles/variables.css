@@ -1,0 +1,51 @@
+/* ==========================================================================
+   Design tokens — colors, type, spacing, motion.
+   Change values here and the whole site follows.
+   ========================================================================== */
+:root {
+  /* Colors */
+  --bg: #050505;
+  --bg-2: #0a0a0a;
+  --surface: #101010;
+  --surface-2: #181818;
+  --line: rgba(255, 255, 255, 0.12);
+  --line-strong: rgba(255, 255, 255, 0.24);
+  --text: #ffffff;
+  --text-soft: #d4d4d4;
+  --muted: #a3a3a3;
+  --dim: #6e6e6e;
+  --pink: #e2457c;
+  --pink-hover: #f25f93;
+  --pink-soft: rgba(226, 69, 124, 0.12);
+  --pink-border: rgba(226, 69, 124, 0.3);
+  --shadow-soft: 0 12px 24px -16px rgba(0, 0, 0, 0.6);
+  --wine: #3a0d1c;
+  --error: #ff7a7a;
+  --success: #5fd49a;
+
+  /* Type */
+  --font-display: "Anton", "Impact", "Arial Narrow Bold", sans-serif;
+  --font-serif: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --fs-hero: clamp(3rem, 10.5vw, 8.25rem);
+  --fs-h1: clamp(2.6rem, 8vw, 6rem);
+  --fs-h2: clamp(2.1rem, 5.6vw, 4.25rem);
+  --fs-h3: clamp(1.4rem, 3vw, 2rem);
+  --fs-body: clamp(0.95rem, 0.9rem + 0.2vw, 1.05rem);
+  --fs-small: 0.82rem;
+
+  /* Layout */
+  --gutter: clamp(1rem, 4vw, 3rem);
+  --container: 1320px;
+  --section: clamp(4rem, 10vw, 8rem);
+  --header-h: 72px;
+  --radius: 14px;
+  --radius-sm: 8px;
+  --radius-pill: 999px;
+
+  /* Motion */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur: 0.6s;
+  --dur-fast: 0.25s;
+}

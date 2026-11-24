@@ -1,0 +1,49 @@
+/* ==========================================================================
+   Projects list — search + category filters + card grid
+   ========================================================================== */
+.list-page { padding-top: clamp(2rem, 6vw, 4rem); }
+
+.list-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
+}
+.list-head__title { font-size: clamp(3rem, 11vw, 7rem); line-height: 0.88; }
+
+.list-controls {
+  display: grid;
+  gap: 1rem;
+  padding: clamp(1rem, 2.5vw, 1.25rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg-2);
+}
+@media (min-width: 1024px) {
+  .list-controls { grid-template-columns: minmax(300px, 1fr) auto; align-items: center; }
+  .list-controls .chip-group { justify-content: flex-end; }
+}
+
+.search { position: relative; }
+.search__icon { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+.search__input { padding-left: 2.8rem; padding-right: 2.8rem; border-radius: var(--radius-pill); }
+.search__input::-webkit-search-cancel-button { display: none; }
+.search__clear {
+  position: absolute;
+  right: 0.4rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: var(--muted);
+  transition: color 0.2s, background-color 0.2s;
+}
+.search__clear:hover { color: #fff; background: var(--surface-2); }
+
+.list-count { margin-block: 1.5rem 1.25rem; font-size: 0.85rem; color: var(--muted); }
+.list-count strong { color: #fff; font-weight: 600; }
+
+mark { background: rgba(226, 69, 124, 0.35); color: inherit; border-radius: 3px; padding-inline: 0.1em; }

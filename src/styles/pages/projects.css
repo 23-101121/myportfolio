@@ -1,0 +1,208 @@
+/* ==========================================================================
+   Work / Projects page — hero, stacking project panels, fan images, drift wall
+   ========================================================================== */
+
+/* ---------- 1) Hero ---------- */
+.wh {
+  position: relative;
+  isolation: isolate;
+  height: 100svh;
+  min-height: 560px;
+  margin-top: calc(var(--header-h) * -1); /* runs under the transparent top bar */
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.wh-bg {
+  position: absolute;
+  inset: -8% 0 0;
+  z-index: -2;
+  background-size: cover;
+  background-position: center;
+  will-change: transform;
+}
+.wh-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(70% 60% at 50% 50%, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.85)),
+    rgba(0, 0, 0, 0.35); /* ≈ 70% black overall */
+}
+.wh-content {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  justify-items: center;
+  gap: clamp(0.75rem, 2svh, 1.25rem);
+  padding-inline: var(--gutter);
+  text-align: center;
+}
+.wh-title { font-size: clamp(3.4rem, min(13vw, 17svh), 11rem); line-height: 0.86; }
+.wh-line { display: block; overflow: hidden; padding-bottom: 0.04em; }
+.wh-line > span { display: inline-block; }
+.wh-line--accent { margin-block: -0.06em; padding: 0.02em 0.15em 0.1em; }
+.wh-lead { max-width: 34ch; color: var(--text-soft); font-size: clamp(0.95rem, 1.3vw, 1.15rem); }
+
+/* Tilted mockups around the heading */
+.wh-mock { position: absolute; z-index: 1; width: clamp(200px, 26vw, 460px); }
+.wh-mock--tl { left: 4%; top: 14%; rotate: -10deg; }
+.wh-mock--tr { right: 3%; top: 10%; rotate: 12deg; }
+.wh-mock--bc { left: 50%; bottom: -22%; width: clamp(260px, 36vw, 620px); translate: -50% 0; rotate: -2deg; }
+.wh-mock__device {
+  padding: clamp(6px, 0.7vw, 12px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: clamp(14px, 1.6vw, 26px);
+  background: #111;
+  box-shadow: var(--shadow-soft);
+}
+.wh-mock__device img { display: block; width: 100%; height: auto; aspect-ratio: 1200 / 820; border-radius: clamp(8px, 1vw, 16px); }
+
+@media (min-width: 768px) and (max-width: 1099px) {
+  .wh-mock--bc { bottom: -9%; width: 46vw; }
+}
+@media (max-width: 767px) {
+  .wh {
+    height: auto;
+    min-height: 100svh;
+    place-items: start center;
+    padding-top: calc(var(--header-h) + 2rem);
+  }
+  .wh-mock { width: 46vw; }
+  .wh-mock--tl { left: -14%; top: 58%; }
+  .wh-mock--tr { right: -14%; left: auto; top: 63%; }
+  .wh-mock--bc { bottom: -6%; width: 72vw; }
+}
+
+/* ---------- Curved categories loop (React Bits CurvedLoop) ---------- */
+.work-loop {
+  overflow: hidden;
+  padding-block: clamp(1rem, 3vw, 2rem) clamp(0.5rem, 2vw, 1.5rem);
+}
+.work-loop .curved-loop-jacket { min-height: 0; } /* the original fills a whole screen; here it's a strip */
+.work-loop__text { font-family: var(--font-display); letter-spacing: 0.02em; }
+@media (max-width: 767px) {
+  /* bigger letters on phones: the curve is drawn wider than the screen */
+  .work-loop .curved-loop-svg { width: 190%; margin-left: -45%; }
+}
+
+/* ---------- 2) Choose your category + stacking panels ---------- */
+.ps { position: relative; padding-top: clamp(2.5rem, 6vw, 5rem); }
+.ps__head { display: grid; gap: 1.5rem; margin-bottom: clamp(2rem, 5vw, 3rem); }
+@media (min-width: 900px) {
+  .ps__head { grid-template-columns: auto 1fr; align-items: end; gap: 3rem; }
+  .ps__head .chip-group { justify-content: flex-end; }
+}
+.ps-skeleton { height: 70svh; }
+.ps__stack { position: relative; }
+
+/* Each panel is a full screen; sticky top:0 makes the next one slide over it. */
+.ps-panel {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  min-height: 560px;
+  overflow: hidden;
+  background:
+    radial-gradient(70% 60% at 78% 50%, hsl(var(--hue, 145) 60% 20% / 0.32), transparent 70%),
+    #050505;
+  box-shadow: 0 -30px 60px -20px rgba(0, 0, 0, 0.8); /* soft edge as it slides over the previous one */
+}
+.ps-panel__inner {
+  height: 100%;
+  display: grid;
+  align-items: center;
+  padding-block: calc(var(--header-h) + 1rem) 2rem;
+  transform-origin: center top;
+  will-change: transform;
+}
+.ps-panel__shade { position: absolute; inset: 0; z-index: 2; background: #000; opacity: 0; pointer-events: none; }
+.ps-panel__grid { display: grid; gap: clamp(1.5rem, 4vw, 3rem); align-items: center; }
+@media (min-width: 900px) { .ps-panel__grid { grid-template-columns: 1fr 1.2fr; } }
+.ps-panel__copy { display: grid; justify-items: start; gap: clamp(0.8rem, 2svh, 1.4rem); }
+.ps-panel__num { font-family: var(--font-serif); font-style: italic; font-size: 1.3rem; color: var(--pink); }
+.ps-panel__title { font-size: clamp(2.6rem, min(7vw, 11svh), 7rem); line-height: 0.9; }
+.ps-panel__tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0; padding: 0; list-style: none; }
+.ps-panel__tags li {
+  padding: 0.3em 0.85em;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+}
+.ps-panel__meta { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+.ps-panel__media { display: grid; place-items: center; }
+
+/* ---------- 3) Fan-out images ---------- */
+.fan { position: relative; width: min(100%, 560px); aspect-ratio: 4 / 3.2; }
+.fan__card,
+.fan__cover {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 66%;
+  height: 61.875%; /* keeps a 4:3 image inside the 4:3.2 box */
+  overflow: hidden;
+  border-radius: 14px;
+  will-change: transform;
+}
+.fan__card > *,
+.fan__cover > * { width: 100%; height: 100%; object-fit: cover; }
+.fan__cover { z-index: 5; box-shadow: var(--shadow-soft); }
+.fan__card:nth-child(1) { z-index: 4; }
+.fan__card:nth-child(2) { z-index: 3; }
+.fan__card:nth-child(3) { z-index: 2; }
+.fan__card:nth-child(4) { z-index: 1; }
+
+@media (max-width: 899px) {
+  .ps-panel__inner { padding-block: calc(var(--header-h) + 0.5rem) 1.5rem; align-items: start; }
+  .ps-panel__grid { gap: clamp(1rem, 3svh, 2rem); }
+  .ps-panel__title { font-size: clamp(2.2rem, min(10vw, 7svh), 4rem); }
+  .fan { width: min(100%, 400px); }
+}
+
+/* ---------- Drift wall ---------- */
+.drift {
+  position: relative;
+  overflow: hidden;
+  min-height: clamp(460px, 80vw, 760px);
+  display: grid;
+  border-top: 1px solid var(--line);
+}
+.drift__wall {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  padding-inline: 0.75rem;
+  opacity: 0.5;
+  -webkit-mask-image: linear-gradient(transparent, #000 18%, #000 82%, transparent);
+  mask-image: linear-gradient(transparent, #000 18%, #000 82%, transparent);
+}
+@media (min-width: 768px) { .drift__wall { grid-template-columns: repeat(5, 1fr); } }
+.drift__col { display: flex; flex-direction: column; gap: 0.75rem; animation: drift-up 45s linear infinite; }
+.drift__col:nth-child(even) { animation-name: drift-down; animation-duration: 55s; }
+.drift__col:nth-child(n + 4) { display: none; }
+@media (min-width: 768px) { .drift__col:nth-child(n + 4) { display: flex; } }
+.drift__tile { flex-shrink: 0; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 12px; border: 1px solid var(--line); }
+.drift__tile > * { width: 100%; height: 100%; object-fit: cover; }
+@keyframes drift-up   { from { transform: translateY(0); }    to { transform: translateY(-50%); } }
+@keyframes drift-down { from { transform: translateY(-50%); } to { transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .drift__col { animation: none; } }
+
+.drift__overlay {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 2rem;
+  padding: 4rem var(--gutter);
+  text-align: center;
+  background: radial-gradient(60% 50% at 50% 50%, rgba(5, 5, 5, 0.85), transparent 80%);
+}
+.drift__title { font-size: clamp(3rem, 11vw, 8.5rem); line-height: 0.88; text-shadow: 0 10px 40px rgba(0, 0, 0, 0.8); }

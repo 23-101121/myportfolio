@@ -1,0 +1,200 @@
+/* ==========================================================================
+   Base — reset, typography, layout helpers, and site-wide motion.
+   ========================================================================== */
+
+/* ---------- Reset ---------- */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+* { margin: 0; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  color-scheme: dark;
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + 1rem);
+  interpolate-size: allow-keywords; /* lets <details> animate where supported */
+}
+
+body {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+img, svg, video, picture { display: block; max-width: 100%; height: auto; }
+a { color: inherit; text-decoration: none; }
+button, input, textarea, select { font: inherit; color: inherit; }
+button { cursor: pointer; background: none; border: 0; padding: 0; }
+ul[class], ol[class] { list-style: none; padding: 0; }
+h1, h2, h3, h4, p { overflow-wrap: break-word; }
+
+:focus-visible { outline: 2px solid var(--pink); outline-offset: 3px; border-radius: 4px; }
+::selection { background: var(--pink); color: #fff; }
+
+/* ---------- Layout ---------- */
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+.section { padding-block: var(--section); }
+.section--tight { padding-block: calc(var(--section) * 0.6); }
+main { display: block; padding-top: var(--header-h); }
+.center { text-align: center; }
+.stack { display: grid; gap: 1rem; }
+
+/* ---------- Typography ---------- */
+.display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 0.95;
+  letter-spacing: 0.005em;
+}
+.h1 { font-size: var(--fs-h1); }
+.h2 { font-size: var(--fs-h2); }
+.h3 { font-size: var(--fs-h3); }
+
+/* The pink italic serif accent used inside headings */
+.accent {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 500;
+  color: var(--pink);
+  text-transform: none;
+  letter-spacing: -0.01em;
+}
+.display .accent { font-size: 1.04em; line-height: 0.85; }
+
+.outline-text {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--text);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.eyebrow::before {
+  content: "";
+  width: 18px;
+  height: 1px;
+  background: var(--pink);
+}
+
+.lead {
+  font-size: clamp(1rem, 0.95rem + 0.35vw, 1.2rem);
+  color: var(--text-soft);
+  max-width: 46ch;
+}
+.muted { color: var(--muted); }
+
+/* ---------- Accessibility helpers ---------- */
+.sr-only {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0);
+  white-space: nowrap; border: 0;
+}
+.skip-link {
+  position: fixed;
+  left: 1rem;
+  top: -100px;
+  z-index: 1000;
+  padding: 0.7rem 1.1rem;
+  border-radius: var(--radius-sm);
+  background: var(--pink);
+  color: #fff;
+  font-weight: 600;
+}
+.skip-link:focus { top: 1rem; }
+
+/* ==========================================================================
+   Motion
+   1. Page load: .load-in elements rise in on first paint (staggered by --i)
+   2. Scroll reveal: [data-reveal] elements fade up when they enter the view
+   3. Page transitions: content fades out before leaving, fades in on arrival
+   ========================================================================== */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes progress {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+@keyframes shimmer {
+  to { background-position: -200% 0; }
+}
+
+/* 1. Page load fade-ins */
+.load-in {
+  animation: rise 1s var(--ease) backwards;
+  animation-delay: calc(var(--i, 0) * 110ms + 120ms);
+}
+
+/* 2. Scroll reveal (only hidden when JS is running, so no-JS users see everything) */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(32px);
+  transition:
+    opacity 0.9s var(--ease) calc(var(--i, 0) * 80ms),
+    transform 0.9s var(--ease) calc(var(--i, 0) * 80ms);
+}
+.js [data-reveal="fade"] { transform: none; }
+.js [data-reveal="scale"] { transform: scale(0.96); }
+.js [data-reveal].is-visible { opacity: 1; transform: none; }
+
+/* 3. Page transitions */
+main,
+.site-footer { animation: fade-in 0.55s ease backwards; }
+
+.is-leaving main,
+.is-leaving .site-footer {
+  opacity: 0;
+  transition: opacity 0.28s ease;
+}
+.is-leaving body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto;
+  height: 2px;
+  z-index: 999;
+  background: var(--pink);
+  transform-origin: left;
+  animation: progress 0.3s var(--ease) both;
+}
+
+/* Respect users who ask for less motion */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+  }
+  .js [data-reveal] { opacity: 1; transform: none; }
+}

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="hsl(188 55% 22%)"/><stop offset="1" stop-color="#070707"/></linearGradient></defs>
+<rect width="600" height="800" fill="url(#g)"/>
+<rect x="60" y="96" width="480" height="496" rx="24" fill="hsl(188 45% 12%)" stroke="hsl(188 70% 55%)" stroke-opacity=".5" stroke-width="4.8"/>
+       <rect x="96" y="160" width="240" height="24" rx="12" fill="hsl(188 70% 55%)"/>
+       <circle cx="408.00000000000006" cy="368" r="84.00000000000001" fill="none" stroke="hsl(188 70% 55%)" stroke-width="12" stroke-dasharray="360 120"/>
+<text x="300" y="744" font-family="Arial, sans-serif" font-weight="700" font-size="45" fill="#fff" text-anchor="middle">ABOUT 1</text>
+<text x="300" y="792" font-family="Arial, sans-serif" font-size="27" fill="#fff" fill-opacity=".55" text-anchor="middle">placeholder · replace me</text>
+</svg>

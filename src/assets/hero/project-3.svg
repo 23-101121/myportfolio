@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1035" width="900" height="1035">
+<defs><radialGradient id="g" cx="80%" cy="0%" r="110%"><stop offset="0" stop-color="hsl(188 70% 50%)" stop-opacity=".55"/><stop offset=".6" stop-color="#070707"/></radialGradient></defs>
+<rect width="900" height="1035" fill="url(#g)"/>
+<rect x="54" y="54" width="792" height="927" rx="36" fill="hsl(188 60% 14%)" stroke="hsl(188 70% 50%)" stroke-opacity=".45" stroke-width="3.6"/>
+<rect x="108" y="108" width="356.40000000000003" height="20.7" rx="10.35" fill="hsl(188 70% 50%)"/>
+<rect x="108" y="154.575" width="221.76000000000002" height="15.524999999999999" rx="10.35" fill="hsl(188 70% 50%)" opacity=".45"/>
+<circle cx="450" cy="569.25" r="221.76000000000002" fill="none" stroke="hsl(188 70% 50%)" stroke-width="17.740800000000004" stroke-dasharray="1020.096 354.81600000000003" opacity=".85"/>
+<text x="450" y="595.8612" font-family="Arial, sans-serif" font-weight="700" font-size="75.39840000000001" fill="#fff" text-anchor="middle">PROJECT-3</text>
+<text x="450" y="948.6" font-family="Arial, sans-serif" font-size="31.500000000000004" fill="#fff" fill-opacity=".55" text-anchor="middle">placeholder watch · replace me</text>
+</svg>
