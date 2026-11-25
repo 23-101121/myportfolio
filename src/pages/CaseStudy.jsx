@@ -1,5 +1,7 @@
+import { useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { getCaseStudyBySlug } from '../lib/supabase.js';
+import { ScrollTrigger } from '../lib/gsap.js';
 import { isValidSlug, pad, projectPath, safeUrl } from '../lib/utils.js';
 import { useAsync } from '../hooks/useAsync.js';
 import { useTitle } from '../hooks/useTitle.js';
@@ -7,6 +9,64 @@ import { Accent, Art, Arrow, Media, NotFoundBlock, SmartImage, State } from '../
 import { DetailSkeleton } from './ProjectDetail.jsx';
 import '../styles/pages/project.css';
 import '../styles/pages/case-study.css';
+
+/* "The process": the big number on the left follows the scroll — it rolls to
+   01, 02, 03… as each step reaches the middle of the screen, and that step
+   lights up while the others dim. */
+function ProcessSteps({ sections, project: p }) {
+  const stepsRef = useRef(null);
+  const [active, setActive] = useState(0);
+  const total = sections.length;
+
+  useEffect(() => {
+    const steps = [...stepsRef.current.querySelectorAll('.cs-step')];
+    const triggers = steps.map((el, i) =>
+      ScrollTrigger.create({
+        trigger: el,
+        start: 'top 55%',
+        end: 'bottom 55%',
+        onToggle: (self) => { if (self.isActive) setActive(i); },
+      })
+    );
+    return () => triggers.forEach((t) => t.kill());
+  }, [total]);
+
+  return (
+    <section className="container section" aria-labelledby="process-title">
+      <div className="cs-process">
+        <div className="cs-process__aside">
+          <div className="cs-process__counter" aria-hidden="true">
+            <span className="cs-process__num">
+              <span className="cs-process__roll" style={{ '--n': active }}>
+                {sections.map((_, i) => <span key={i}>{pad(i + 1)}</span>)}
+              </span>
+            </span>
+            <span className="cs-process__total">/ {pad(total)}</span>
+          </div>
+          <h2 className="display h3" id="process-title">The <em className="accent">process</em></h2>
+          <p className="cs-process__current" aria-live="polite">{sections[active]?.title}</p>
+        </div>
+        <div className="cs-steps" ref={stepsRef}>
+          {sections.map((s, i) => {
+            const img = p.gallery[i];
+            return (
+              <article className={`cs-step${i === active ? ' is-active' : ''}`} key={`${s.title}-${i}`}>
+                <span className="cs-step__num">{pad(i + 1)}</span>
+                <h3 className="display cs-step__title">{s.title}</h3>
+                {s.body && <p className="cs-step__body">{s.body}</p>}
+                <div className="cs-step__media">
+                  {img
+                    ? <SmartImage src={img.src} alt={img.caption || s.title} fallback={<Art seed={`${p.slug}${i}`} label={s.title} />} />
+                    : <Art seed={`${p.slug}${i}`} label={s.title} ariaLabel={`${s.title} placeholder`} />}
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
 
 /* /case-study/:slug — one reusable template for every case study. */
 export default function CaseStudy() {
@@ -87,33 +147,7 @@ export default function CaseStudy() {
         </section>
       )}
 
-      {sections.length > 0 && (
-        <section className="container section" aria-labelledby="process-title">
-          <div className="cs-process">
-            <div className="cs-process__aside" data-reveal>
-              <span className="cs-process__num" aria-hidden="true">01</span>
-              <h2 className="display h3" id="process-title">The <em className="accent">process</em></h2>
-            </div>
-            <div className="cs-steps">
-              {sections.map((s, i) => {
-                const img = p.gallery[i];
-                return (
-                  <article className="cs-step" data-reveal key={`${s.title}-${i}`}>
-                    <span className="cs-step__num">{pad(i + 1)}</span>
-                    <h3 className="display cs-step__title">{s.title}</h3>
-                    {s.body && <p className="cs-step__body">{s.body}</p>}
-                    <div className="cs-step__media">
-                      {img
-                        ? <SmartImage src={img.src} alt={img.caption || s.title} fallback={<Art seed={`${p.slug}${i}`} label={s.title} />} />
-                        : <Art seed={`${p.slug}${i}`} label={s.title} ariaLabel={`${s.title} placeholder`} />}
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-      )}
+      {sections.length > 0 && <ProcessSteps sections={sections} project={p} />}
 
       {cs.solution && (
         <section className="container section" aria-labelledby="decision-title">
